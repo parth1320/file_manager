@@ -19,6 +19,9 @@ const Request = new mongoose.Schema(
       type: String,
       default: null,
     },
+    comments: {
+      type: String,
+    },
     is_approved: {
       type: Boolean,
       default: false,

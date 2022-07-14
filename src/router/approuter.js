@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Navbar from "../components/navbar";
 import Register from "../components/register";
 import Login from "../components/login";
+import Report from "../components/report";
 import Dashboard from "../admin_component/dashboard";
 import App from "../components/app";
 import FilesList from "../components/fileslist";
@@ -14,6 +14,7 @@ class AppRouter extends Component {
         <div className="App">
           <Route exact path="/" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route exact path="/report" component={Report} />
           {localStorage.getItem("role") === "true" ? (
             <Route exact path="/dashboard" component={Dashboard} />
           ) : (

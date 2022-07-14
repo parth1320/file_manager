@@ -19,6 +19,10 @@ const Login = ({ setLoginUser }) => {
     });
   };
 
+  const onclick = (e) => {
+    history.push("/list");
+  };
+
   const onSubmit = (e) => {
     axios
       .post(`${API_URL}/login`, user)
@@ -86,6 +90,23 @@ const Login = ({ setLoginUser }) => {
                 className="btn btn-large waves-effect waves-light hoverable blue accent-3"
               >
                 Login
+              </button>
+            </div>
+            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
+              <button
+                onClick={(e) => {
+                  onclick(e);
+                }}
+                style={{
+                  width: "150px",
+                  borderRadius: "3px",
+                  letterSpacing: "1.5px",
+                  marginTop: "1rem",
+                }}
+                type="submit"
+                className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+              >
+                For Guest User
               </button>
             </div>
           </div>

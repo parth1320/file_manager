@@ -1,6 +1,7 @@
 const Request = require("../model/request");
 const User = require("../model/user");
 const File = require("../model/file");
+const cron = require("node-cron");
 
 exports.newRequest = async (req, res) => {
   try {
@@ -14,7 +15,6 @@ exports.newRequest = async (req, res) => {
       user_name: userName.name,
       file_name: fileName.title,
     });
-    console.log(createRequest);
     if (createRequest) {
       createRequest.save();
       res.json({ success: "Request Added Successfully" });
@@ -53,3 +53,31 @@ exports.rejectRequest = async (req, res) => {
     res.send({ msg: "success" });
   }
 };
+
+exports.deleteRequest = async (req, res) => {
+  const { id } = req.params;
+  const request = await Request.findByIdAndDelete(id);
+  res.send(request);
+};
+
+exports.reportRequest = async (req, res) => {
+  try {
+    const comment = req.body;
+    const { id } = req.params;
+    const file = await Request.findOneAndUpdate(
+      { file: id },
+      {
+        comments: comment,
+      },
+      { new: true, overwrite: true },
+    );
+    res.send(file);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+cron.schedule("30 2 * * *", () => {
+  updatedAt = Request.find({});
+  
+});

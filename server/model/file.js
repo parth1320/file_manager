@@ -14,6 +14,9 @@ const fileSchema = new mongoose.Schema({
   avatar: {
     type: Buffer,
   },
+  has_256: {
+    type: String,
+  },
   file_mimetype: {
     type: String,
   },

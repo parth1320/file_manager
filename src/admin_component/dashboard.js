@@ -42,23 +42,33 @@ const Admin_Table = () => {
         console.log(err);
       });
   };
+  const deleteRequest = (e, id) => {
+    axios
+      .delete(`${API_URL}/request/delete/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((res) => {
+        alert("Request Deleted Successfully");
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <div>
         <body className="antialiased font-sans bg-gray-200">
-          <div className="container mx-auto px-4 sm:px-8">
+          <div className="files-container">
             <div className="py-8">
               <div>
                 <h2 className="text-2xl text-center font-semibold leading-tight">
                   Admin File Data List
                 </h2>
               </div>
-              <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                <div
-                  style={{ overflow: "auto", maxHeight: "600px" }}
-                  className="inline-block min-w-full shadow rounded-lg overflow-hidden"
-                >
-                  <table className="min-w-full leading-normal">
+              <div>
+                <div style={{ overflow: "auto", maxHeight: "600px" }}>
+                  <table className="files-table">
                     <thead>
                       <tr>
                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -78,11 +88,19 @@ const Admin_Table = () => {
                         </th>
                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                           {" "}
-                          Accept
+                          Report Message
                         </th>
                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                           {" "}
-                          Reject
+                          Approve
+                        </th>
+                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          {" "}
+                          Block
+                        </th>
+                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          {" "}
+                          Delete
                         </th>
                       </tr>
                     </thead>
@@ -120,7 +138,9 @@ const Admin_Table = () => {
                                 ).toLocaleTimeString()}
                             </p>
                           </td>
-
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p className="text-gray-900 whitespace-no-wrap"></p>
+                          </td>
                           <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                             <p className="text-gray-900 whitespace-no-wrap">
                               {" "}
@@ -137,7 +157,7 @@ const Admin_Table = () => {
                                       : false
                                   }
                                 >
-                                  Accept
+                                  Approve
                                 </Button>
                               }
                             </p>
@@ -158,7 +178,21 @@ const Admin_Table = () => {
                                       : false
                                   }
                                 >
-                                  Reject
+                                  Block
+                                </Button>
+                              }
+                            </p>
+                          </td>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p className="text-gray-900 whitespace-no-wrap">
+                              {" "}
+                              {
+                                <Button
+                                  variant="contained"
+                                  onClick={(e) => deleteRequest(e, request._id)}
+                                  color="error"
+                                >
+                                  Delete
                                 </Button>
                               }
                             </p>

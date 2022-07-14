@@ -1,9 +1,12 @@
 const path = require("path");
 const express = require("express");
 const multer = require("multer");
+const crypto = require("crypto");
+const hash = crypto.createHash("sha256");
 const File = require("../model/file");
 const { verifyAccessToken } = require("../middleware/auth");
 const Router = express.Router();
+const fs = require("fs");
 const upload = multer({
   // storage: multer.diskStorage({
   //   destination(req, file, cb) {
@@ -37,12 +40,13 @@ Router.post(
       const { title, description } = req.body;
       const { mimetype } = req.file;
       const avatar = req.file.buffer;
+      const has_256 = hash.update(avatar).digest("hex");
       const { id } = req.params;
-      console.log(id);
       const file = new File({
         title,
         description,
         avatar,
+        has_256,
         file_mimetype: mimetype,
         user: id,
       });
@@ -61,11 +65,13 @@ Router.post(
 
 Router.get("/getAllFiles", async (req, res) => {
   try {
+    const cookie = fs.readFileSync("./cookies.txt", "utf-8");
     const files = await File.find({}).lean();
     const sortedByCreationDate = files.sort(
       (a, b) => b.createdAt - a.createdAt,
     );
-    res.send(sortedByCreationDate);
+    res.cookie(cookie);
+    res.json({ cookie, sortedByCreationDate });
   } catch (error) {
     res.status(400).send("Error while getting list of files. Try again later.");
   }
